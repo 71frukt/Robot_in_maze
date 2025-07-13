@@ -13,7 +13,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share' ,package_name, 'launch')               , glob('launch/*')),
         (os.path.join('share' ,package_name, 'config')               , glob('config/*')),
-        # (os.path.join('share' ,package_name, 'world/random_maze')           , glob('world/random_maze/*')),
+        (os.path.join('share' ,package_name, 'world/random_maze')           , glob('world/random_maze/*')),
         # (os.path.join('share' ,package_name, 'world/default_maze')           , glob('world/default_maze/*')),
         (os.path.join('share' ,package_name, 'models/actor')         , glob('models/actor/*')),
         (os.path.join('share' ,package_name, 'models/table')         , glob('models/table/*')),

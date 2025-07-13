@@ -19,12 +19,12 @@ MAZE_SDF_FILE_PATH = 'world/random_maze/model.sdf'
 
 # MAZE_YAML_FILE_NAME = MAZE_PGM_FILE_NAME.replace('.pgm', '.yaml')  -  так кодом задается имя yaml файла
 
-CELL_SIZE      = 3       # 1 x 1 метр
-WALL_THICKNESS = 1
+CELL_SIZE          = 1      # 1 x 1 метр
+CELL_TO_WALL_RATIO = 3      # коридор в 3 раза шире стены
 
-PGM_MAP_SCALE  = 10      # 1 метр = 10 пикселей
+PGM_MAP_SCALE  = 10         # 1 метр = 10 пикселей
 
-WALL_HEIGHT    = 2.5     # 2.5 метра в симуляции Gazebo
+WALL_HEIGHT    = 2.5        # 2.5 метра в симуляции Gazebo
 
 def generate_maze(maze_width, maze_height):
     
@@ -53,10 +53,12 @@ def generate_maze(maze_width, maze_height):
                     carve_pass(new_x, new_y)
 
     # начать вырезать проход с угла
-    carve_pass(1, 1)
+    carve_pass(blocks_count_y - 2, 1)
+
+    maze[blocks_count_y - 1, 0] = 0     # вход на старте
 
     # пробиваем несколько выходов (по краям), чтобы выходов из лабиринта было несколько
-    for _ in range(3):
+    for _ in range(2):
         side = random.choice(['top', 'bottom', 'left', 'right'])
         if side == 'top':
             x = random.randrange(1, blocks_count_x - 1, 2)
@@ -87,12 +89,12 @@ def upscale_maze(maze, scale):
     for i in range(height):
         for j in range(width):
             if maze[i][j] == 0:
-                start_y = i * CELL_SIZE
-                start_x = j * CELL_SIZE
+                start_y = i * scale
+                start_x = j * scale
 
                 # print(f"start_x = {start_x}, start_y = {start_y}\n")
 
-                maze_upscaled[start_y:start_y + CELL_SIZE, start_x:start_x + CELL_SIZE] = 0
+                maze_upscaled[start_y:start_y + scale, start_x:start_x + scale] = 0
 
     return maze_upscaled
 
@@ -122,12 +124,12 @@ def thin_walls(maze, scaled_maze, scale):
                 if maze[row_num][col_num] == 1 and maze[row_num + 1][col_num] == 1:     # если это стена и под ней стена, то по вертикали не сужаем
                     continue
 
-                scaled_maze[scaled_maze_row_num + WALL_THICKNESS : scaled_maze_row_num + scale, scaled_maze_col_num : scaled_maze_col_num + scale] = 0
+                scaled_maze[scaled_maze_row_num + 1 : scaled_maze_row_num + scale, scaled_maze_col_num : scaled_maze_col_num + scale] = 0
 
     last_scaled_row_num = (height - 1) * scale
     last_scaled_col_num = (width - 1)  * scale
 
-    scaled_maze[last_scaled_row_num + WALL_THICKNESS : last_scaled_row_num + scale, 0 : last_scaled_col_num + scale] = 0
+    scaled_maze[last_scaled_row_num + 1 : last_scaled_row_num + scale, 0 : last_scaled_col_num + scale] = 0
 
 
     # утоньчение по вертикали
@@ -149,16 +151,16 @@ def thin_walls(maze, scaled_maze, scale):
                 if maze[row_num][col_num] == 1 and maze[row_num][col_num + 1] == 1:     # если это стена и под ней стена, то по вертикали не сужаем
                     continue
 
-                scaled_maze[scaled_maze_row_num : scaled_maze_row_num + scale, scaled_maze_col_num + WALL_THICKNESS : scaled_maze_col_num + scale] = 0
+                scaled_maze[scaled_maze_row_num : scaled_maze_row_num + scale, scaled_maze_col_num + 1 : scaled_maze_col_num + scale] = 0
 
     last_scaled_row_num = (height - 1) * scale
     last_scaled_col_num = (width - 1)  * scale
 
-    scaled_maze[0 : last_scaled_row_num + scale, last_scaled_col_num + WALL_THICKNESS : last_scaled_col_num + scale] = 0
+    scaled_maze[0 : last_scaled_row_num + scale, last_scaled_col_num + 1 : last_scaled_col_num + scale] = 0
 #---------------------------------------------------------------------
 
-def save_maze_as_pgm(maze, pgm_file_path, cell_pixel_size):     # один блок - это cell_pixel_size*cell_pixel_size пикселей
-    pixels_arr = 255 * (1 - maze)                               # стены = 0 (черный), проходы = 255 (белый)
+def save_maze_as_pgm(maze, cell_pixel_size, pgm_file_path=MAZE_PGM_FILE_PATH):      # один блок - это cell_pixel_size*cell_pixel_size пикселей
+    pixels_arr = 255 * (1 - maze)                                                   # стены = 0 (черный), проходы = 255 (белый)
     pixels_arr = np.kron(pixels_arr, np.ones((cell_pixel_size, cell_pixel_size)))   # масштаб
 
     img_pgm = Image.fromarray(pixels_arr.astype(np.uint8))
@@ -166,7 +168,7 @@ def save_maze_as_pgm(maze, pgm_file_path, cell_pixel_size):     # один бл�
 
 #---------------------------------------------------------------------
 
-def generate_yaml(pgm_file_folder, pgm_filename, resolution=1/PGM_MAP_SCALE, origin=[0.0, 0.0, 0.0]):
+def generate_yaml(pgm_file_folder, pgm_filename, resolution, origin=[0.0, 0.0, 0.0]):
     yaml_data = {
         'image': pgm_filename,
         'resolution': resolution,
@@ -182,7 +184,7 @@ def generate_yaml(pgm_file_folder, pgm_filename, resolution=1/PGM_MAP_SCALE, ori
 #---------------------------------------------------------------------
 
 def generate_sdf(maze, sdf_filename,
-                           cell_size=CELL_SIZE,
+                           cell_size,
                            wall_height=WALL_HEIGHT):
     maze_hight, maze_width = maze.shape
     wall_id = 0
@@ -247,23 +249,32 @@ def generate_sdf(maze, sdf_filename,
 #---------------------------------------------------------------------
 
 
-maze = generate_maze(10, 10)
+
+maze = generate_maze(5, 5)
 for row in maze:
     print("".join("##" if cell == 1 else "  " for cell in row))
 
 print("\n\n")
 
-maze_upscaled = upscale_maze(maze, CELL_SIZE)
+maze_increase_scale = CELL_TO_WALL_RATIO
+
+maze_upscaled = upscale_maze(maze, maze_increase_scale)
+
 for row in maze_upscaled:
     print("".join("##" if cell == 1 else "  " for cell in row))
 print("\n\n")
 
 
-thin_walls(maze, maze_upscaled, CELL_SIZE)
+thin_walls(maze, maze_upscaled, CELL_TO_WALL_RATIO)
 for row in maze_upscaled:
     print("".join("##" if cell == 1 else "  " for cell in row))
 
-generate_sdf(maze, MAZE_SDF_FILE_PATH)
+generate_sdf(maze_upscaled, MAZE_SDF_FILE_PATH, CELL_SIZE / CELL_TO_WALL_RATIO)
 
-save_maze_as_pgm(maze, MAZE_PGM_FILE_PATH, cell_pixel_size=CELL_SIZE * PGM_MAP_SCALE)
-generate_yaml(MAZE_PGM_FILE_FOLDER, MAZE_PGM_FILENAME)
+
+cell_pixel_size = int(CELL_SIZE / maze_increase_scale * PGM_MAP_SCALE)
+
+print(f"cell_p_s = {cell_pixel_size}\n")
+
+save_maze_as_pgm(maze_upscaled, cell_pixel_size)
+generate_yaml(MAZE_PGM_FILE_FOLDER, MAZE_PGM_FILENAME, CELL_SIZE / maze_increase_scale / cell_pixel_size)
