@@ -27,8 +27,8 @@ WALL_HEIGHT        = 2.5    # 2.5 метра в симуляции Gazebo
 
 PGM_MAP_SCALE      = 10     # 1 метр = 10 пикселей
 
-MAZE_HEIGHT        = 10     # размеры лабиринта в клетках
-MAZE_WIDTH         = 10
+MAZE_HEIGHT        = 5     # размеры лабиринта в клетках
+MAZE_WIDTH         = 5
 
 
 def generate_maze(maze_width, maze_height):
@@ -110,7 +110,7 @@ def upscale_maze(maze, scale):
 def thin_walls(maze, scaled_maze, scale):
     height, width = maze.shape
 
-    # утоньчение по вертикали
+    # утоньшение стен по вертикали
 
     for row_num in range(height - 2):
         can_be_thin = True
@@ -137,7 +137,7 @@ def thin_walls(maze, scaled_maze, scale):
     scaled_maze[last_scaled_row_num + 1 : last_scaled_row_num + scale, 0 : last_scaled_col_num + scale] = 0
 
 
-    # утоньчение по вертикали
+    # утоньшение стен по горизонтали
 
     for col_num in range(width - 2):
         can_be_thin = True
@@ -277,7 +277,7 @@ maze_increase_scale = CELL_TO_WALL_RATIO
 
 maze_upscaled = upscale_maze(maze, maze_increase_scale)
 
-# thin_walls(maze, maze_upscaled, CELL_TO_WALL_RATIO)
+thin_walls(maze, maze_upscaled, CELL_TO_WALL_RATIO)
 
 print_maze(maze_upscaled)
 

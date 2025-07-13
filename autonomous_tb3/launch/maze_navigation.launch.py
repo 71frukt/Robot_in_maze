@@ -40,8 +40,8 @@ def generate_launch_description():
     pkg_gazebo_ros  = get_package_share_directory('gazebo_ros')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    x_pose = LaunchConfiguration('x_pose', default='1.0')
-    y_pose = LaunchConfiguration('y_pose', default='1.0')
+    x_pose = LaunchConfiguration('x_pose', default='2.0')
+    y_pose = LaunchConfiguration('y_pose', default='2.0')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
