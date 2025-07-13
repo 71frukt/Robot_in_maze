@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import random
 import yaml
+import os
 
 #---------------------------------------------------------------------
 # Этот скрипт строит рандомный алгоритм через DFS, генерирует для него 
@@ -9,22 +10,26 @@ import yaml
 # .sdf файл лабиринта для Gazebo
 #---------------------------------------------------------------------
 
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 MAZE_PGM_FILE_FOLDER = 'config/'
 MAZE_PGM_FILENAME    = 'random_maze.pgm'
-MAZE_PGM_FILE_PATH   = MAZE_PGM_FILE_FOLDER + MAZE_PGM_FILENAME
 
-MAZE_SDF_FILE_PATH = 'world/random_maze/model.sdf'
+MAZE_PGM_FILE_PATH = os.path.join(BASE_DIR, '..', MAZE_PGM_FILE_FOLDER,  MAZE_PGM_FILENAME)
+
+MAZE_SDF_FILE_PATH = os.path.join(BASE_DIR, '..', 'world', 'random_maze', 'model.sdf')
 
 # MAZE_YAML_FILE_NAME = MAZE_PGM_FILE_NAME.replace('.pgm', '.yaml')  -  так кодом задается имя yaml файла
 
 CELL_SIZE          = 1      # 1 x 1 метр
 CELL_TO_WALL_RATIO = 3      # коридор в 3 раза шире стены
+WALL_HEIGHT        = 2.5    # 2.5 метра в симуляции Gazebo
 
-PGM_MAP_SCALE  = 10         # 1 метр = 10 пикселей
+PGM_MAP_SCALE      = 10     # 1 метр = 10 пикселей
 
-WALL_HEIGHT    = 2.5        # 2.5 метра в симуляции Gazebo
+MAZE_HEIGHT        = 10     # размеры лабиринта в клетках
+MAZE_WIDTH         = 10
+
 
 def generate_maze(maze_width, maze_height):
     
@@ -177,7 +182,10 @@ def generate_yaml(pgm_file_folder, pgm_filename, resolution, origin=[0.0, 0.0, 0
         'occupied_thresh': 0.65,
         'free_thresh': 0.196
     }
-    with open((pgm_file_folder + pgm_filename).replace('.pgm', '.yaml'), 'w') as yaml_file:
+
+    yaml_filename = os.path.join(BASE_DIR, '..', pgm_file_folder,  pgm_filename)
+
+    with open(yaml_filename.replace('.pgm', '.yaml'), 'w') as yaml_file:
         yaml.dump(yaml_data, yaml_file, default_flow_style=None)
 
 
@@ -248,9 +256,18 @@ def generate_sdf(maze, sdf_filename,
 
 #---------------------------------------------------------------------
 
+def print_maze(maze):
+    print(f"Generated maze:\n\n")
+
+    for row in maze:
+        print("".join("##" if cell == 1 else "  " for cell in row))
+
+    print('\n\n')   
+
+#---------------------------------------------------------------------
 
 
-maze = generate_maze(5, 5)
+maze = generate_maze(MAZE_HEIGHT, MAZE_WIDTH)
 for row in maze:
     print("".join("##" if cell == 1 else "  " for cell in row))
 
@@ -260,21 +277,14 @@ maze_increase_scale = CELL_TO_WALL_RATIO
 
 maze_upscaled = upscale_maze(maze, maze_increase_scale)
 
-for row in maze_upscaled:
-    print("".join("##" if cell == 1 else "  " for cell in row))
-print("\n\n")
+# thin_walls(maze, maze_upscaled, CELL_TO_WALL_RATIO)
 
-
-thin_walls(maze, maze_upscaled, CELL_TO_WALL_RATIO)
-for row in maze_upscaled:
-    print("".join("##" if cell == 1 else "  " for cell in row))
+print_maze(maze_upscaled)
 
 generate_sdf(maze_upscaled, MAZE_SDF_FILE_PATH, CELL_SIZE / CELL_TO_WALL_RATIO)
 
 
 cell_pixel_size = int(CELL_SIZE / maze_increase_scale * PGM_MAP_SCALE)
-
-print(f"cell_p_s = {cell_pixel_size}\n")
 
 save_maze_as_pgm(maze_upscaled, cell_pixel_size)
 generate_yaml(MAZE_PGM_FILE_FOLDER, MAZE_PGM_FILENAME, CELL_SIZE / maze_increase_scale / cell_pixel_size)
