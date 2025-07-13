@@ -103,7 +103,12 @@ def generate_launch_description():
 
     )
 
-
+    path_follower_node = Node(
+        package='autonomous_tb3',
+        executable='path_follower',
+        name='path_follower',
+        output='screen'
+    )
 
 
     ld = LaunchDescription()
@@ -117,5 +122,6 @@ def generate_launch_description():
     # ld.add_action(maze_mapping)
     ld.add_action(rviz)
     ld.add_action(maze_nav)
+    ld.add_action(path_follower_node)
 
     return ld

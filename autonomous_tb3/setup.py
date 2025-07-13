@@ -37,7 +37,8 @@ setup(
             'sdf_spawner = autonomous_tb3.spawn_entity:main',
             'maze_solver = autonomous_tb3.maze_solver:main',
             'autonomous_waiter_lite = autonomous_tb3.hotel_waiter_single_goal:start_app',
-            'autonomous_waiter = autonomous_tb3.hotel_waiter_multi_button:start_app'
+            'autonomous_waiter = autonomous_tb3.hotel_waiter_multi_button:start_app',
+            'path_follower = autonomous_tb3.path_follower:main'
         ],
     },
 )
