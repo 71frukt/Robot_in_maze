@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>autonomous_tb3</name>
+    <version>0.0.0</version>
+    <description>dumb</description>
+    <maintainer email="noshluk2@gmail.com">luqman</maintainer>
+    <license>TODO: License declaration</license>
+
+    <test_depend>ament_copyright</test_depend>
+    <test_depend>ament_flake8</test_depend>
+    <test_depend>ament_pep257</test_depend>
+    <test_depend>python3-pytest</test_depend>
+
+    <exec_depend>rclpy</exec_depend>
+    <exec_depend>geometry_msgs</exec_depend>
+    <exec_depend>turtlebot3_gazebo</exec_depend>
+
+
+    <exec_depend>ament_cmake_python</exec_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>  <!-- основа — cmake -->
+    </export>
+</package>
