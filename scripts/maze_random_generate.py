@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 from PIL import Image
 import random
@@ -27,7 +29,7 @@ WALL_HEIGHT        = 2.5    # 2.5 метра в симуляции Gazebo
 
 PGM_MAP_SCALE      = 10     # 1 метр = 10 пикселей
 
-MAZE_HEIGHT        = 5     # размеры лабиринта в клетках
+MAZE_HEIGHT        = 5      # размеры лабиринта в клетках
 MAZE_WIDTH         = 5
 
 

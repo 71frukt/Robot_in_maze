@@ -76,7 +76,7 @@ def generate_launch_description():
     hotel_spawner=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[hotel_path,"hotel","0.0" ,"0.0" ]
 
@@ -85,7 +85,7 @@ def generate_launch_description():
     table_spawner_1=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[table_path,"table_1","-0.6" ,"3.99" ]
 
@@ -94,7 +94,7 @@ def generate_launch_description():
     table_spawner_2=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[table_path,"table_2","4.52" ,"3.99" ]
 
@@ -103,7 +103,7 @@ def generate_launch_description():
     table_spawner_3=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[table_path,"table_3","4.53" ,"-3.17" ]
 
@@ -112,7 +112,7 @@ def generate_launch_description():
     table_spawner_4=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[table_path,"table_4","-0.6" ,"-3.09" ]
 
@@ -121,7 +121,7 @@ def generate_launch_description():
     actor_spawn=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='hotel_spawner',
         arguments=[actor_path,"actor","-0.6" ,"-3.09" ]
 

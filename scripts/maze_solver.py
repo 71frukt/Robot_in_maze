@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+
 '''
 This is a Python script that uses the nav2_simple_commander package to navigate a robot
 through a sequence of pre-defined poses in a ROS 2 environment. The BasicNavigator class
@@ -36,15 +37,6 @@ def main():
     goal_pose.pose.position.y =-2.1
     goal_pose.pose.orientation.w =0.99
     goals.append(goal_pose)
-
-    # goal_pose_1 = PoseStamped()
-    # goal_pose_1.header.frame_id = 'map'
-    # goal_pose_1.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose_1.pose.position.x =-7.4
-    # goal_pose_1.pose.position.y =-1.17
-    # goal_pose_1.pose.orientation.w =0.99
-    # goals.append(goal_pose_1)
-
 
     navigator.goThroughPoses(goals)
     while not navigator.isTaskComplete():

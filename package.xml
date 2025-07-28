@@ -2,24 +2,27 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
     <name>autonomous_tb3</name>
-    <version>0.0.0</version>
-    <description>dumb</description>
-    <maintainer email="noshluk2@gmail.com">luqman</maintainer>
-    <license>TODO: License declaration</license>
+    <version>0.1.0</version>
+    <description>Autonomous TurtleBot3 with mixed C++ and Python nodes</description>
 
-    <test_depend>ament_copyright</test_depend>
-    <test_depend>ament_flake8</test_depend>
-    <test_depend>ament_pep257</test_depend>
-    <test_depend>python3-pytest</test_depend>
+    <maintainer email="71frukt@mail.ru">frukt</maintainer>
+    <license>Apache-2.0</license>
 
-    <exec_depend>rclpy</exec_depend>
-    <exec_depend>geometry_msgs</exec_depend>
-    <exec_depend>turtlebot3_gazebo</exec_depend>
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <buildtool_depend>ament_cmake_python</buildtool_depend>
 
+    <depend>rclcpp</depend>
+    <depend>rclpy</depend>
+    <depend>turtlebot3_gazebo</depend>
+    <depend>sensor_msgs</depend>
+    <depend>geometry_msgs</depend>
+    <depend>keyboard_msgs</depend>
+    <depend>keyboard</depend>
 
-    <exec_depend>ament_cmake_python</exec_depend>
+    <test_depend>ament_lint_auto</test_depend>
+    <test_depend>ament_lint_common</test_depend>
 
     <export>
-        <build_type>ament_cmake</build_type>  <!-- основа — cmake -->
+        <build_type>ament_cmake</build_type>
     </export>
 </package>

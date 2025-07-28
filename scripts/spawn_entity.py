@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 
 # yellow_light_sdf=$HOME/.gazebo/models/yellow_light/model.sdf
 # ros2 run self_driving_car_pkg spawner_node $red_light_sdf red_light 0.0 0.0

@@ -29,7 +29,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
     # maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'),'world','default_maze','model.sdf')
-    maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'), 'world', 'random_maze', 'model.sdf')
+    maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'), 'worlds', 'random_maze', 'model.sdf')
 
     config_dir      = os.path.join(get_package_share_directory('autonomous_tb3'),'config')
     
@@ -75,10 +75,9 @@ def generate_launch_description():
     maze_spawner=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='maze_spawner',
         arguments=[maze_path,"b","0.0" ,"0.0" ]
-
     )
 
     maze_mapping = IncludeLaunchDescription(

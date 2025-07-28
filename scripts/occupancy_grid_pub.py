@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 The given Python code is a ROS2 node that publishes an Occupancy Grid message to the 'map' topic every 0.5 seconds.
  The OccupancyGrid message is a standard ROS2 message used to represent maps,

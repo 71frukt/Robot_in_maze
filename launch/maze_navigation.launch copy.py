@@ -75,7 +75,7 @@ def generate_launch_description():
     maze_spawner=Node(
         package='autonomous_tb3',
         output='screen',
-        executable='sdf_spawner',
+        executable='spawn_entity.py',
         name='maze_spawner',
         arguments=[maze_path,"b","0.0" ,"0.0" ]
 

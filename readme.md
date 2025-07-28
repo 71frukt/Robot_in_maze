@@ -220,3 +220,15 @@ ros2 launch autonomous_tb3 maze_navigation.launch.py
 ```
 
 Алгоритм поиска выхода из лабиринта A* - это модифицированная версия алгоитма Дейкстры. Её отличие заключается в выборе next_node - учитывается расстояние от next_node до финиша, и в очереди лежат вершины не просто в порядке уменьшения weight (weight - вес ребра соединяющего next_node и cur_node). Для определения веса вершины в очереди используется монотонная функция h(node), которая характеризует расстояние от node до финиша, и тогда вес вершины node в очереди = weight + h(node).
+
+
+
+
+
+
+Про то как подгрузить нужные модели
+
+```bash
+cd ros_ws/src/autonomous_tb3
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:<path to gazebo_models_worlds_collection>/models
+```

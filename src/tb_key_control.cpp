@@ -1,46 +1,69 @@
-#include "tb_key_control.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <keyboard_msgs/msg/key.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 
-TbKeyController::TbKeyController() : Node("tb_key_controller_node")
+#include "autonomous_tb3/tb_key_control.hpp"
+
+
+TbKeyController::TbKeyController() : Node("key_listener")
 {
-    velocity_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(4).reliable());
+    // subscribe on keydown
+    keydown_subscr_ = create_subscription<keyboard_msgs::msg::Key>(
+        KEYDOWN_TOPIC_NAME_,
+        10,
 
-    tcgetattr(STDIN_FILENO, &old_tio_);         // Setting up a terminal to read keys without Enter
+        [this](const keyboard_msgs::msg::Key::SharedPtr msg) {
+            KeyEventCallback_(msg, TbKeyController::KEYDOWN);
+        }
+
+        // std::bind(&TbKeyController::KeyEventCallback_, this, std::placeholders::_1, TbKeyController::KEYDOWN)
+    );
+
+    keyup_subscr_ = create_subscription<keyboard_msgs::msg::Key>(
+        KEYUP_TOPIC_NAME_,
+        10,
+
+        [this](const keyboard_msgs::msg::Key::SharedPtr msg) {
+            KeyEventCallback_(msg, TbKeyController::KEYUP);
+        }
+        
+        // std::bind(&TbKeyController::KeyEventCallback_, this, std::placeholders::_1, TbKeyController::KEYUP)
+    );
     
-    new_tio_ = old_tio_;
-    new_tio_.c_lflag &= ~(ICANON);
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &new_tio_);
 
-    timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(KEYBOARD_CHECK_PERIOD),
-        std::bind(&TbKeyController::TimerCallback_, this));
-
-    RCLCPP_INFO(this->get_logger(), "Use WASD for robot control, Q for quit");
+    velocity_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", rclcpp::QoS(4).reliable());
 }
 
-TbKeyController::~TbKeyController()
+void TbKeyController::KeyEventCallback_(const keyboard_msgs::msg::Key::SharedPtr key_msg, const KeyType key_type)
 {
-    tcsetattr(STDIN_FILENO, TCSANOW, &old_tio_);    // Restoring terminal settings
+    keys_info_[key_msg->code].key_type = key_type;
+
+    RobotKeyControl_();
 }
 
-
-void TbKeyController::TimerCallback_()
+void TbKeyController::RobotKeyControl_()
 {
     geometry_msgs::msg::Twist tb_twist = geometry_msgs::msg::Twist();
 
-    char pressed_key = 0;
+    if (GetKeyInfo_(TB_MOVE_FORWARD_KEY_).key_type == KEYDOWN)
+        tb_twist.linear.x = TB_MOVE_SPEED;
+
+    else if (GetKeyInfo_(TB_MOVE_BACKWARD_KEY_).key_type == KEYDOWN)
+        tb_twist.linear.x = -TB_MOVE_SPEED;
+
+    else
+        tb_twist.linear.x = 0;
 
 
-    switch (pressed_key) 
-    {
-    case TB_MOVE_FORWARD_KEY: tb_twist.linear.x  =  TB_MOVE_SPEED;  break;
-    case TB_MOVE_BACK_KEY   : tb_twist.linear.x  = -TB_MOVE_SPEED;  break;
-    case TB_TURN_LEFT_KEY   : tb_twist.angular.z =  TB_TURN_SPEED;  break;
-    case TB_TURN_RIGHT_KEY  : tb_twist.angular.z = -TB_TURN_SPEED;  break;
+    if (GetKeyInfo_(TB_TURN_LEFT_KEY_).key_type == KEYDOWN)
+        tb_twist.angular.z = TB_TURN_SPEED;
 
-    default                 :  tb_twist.linear.x  = 0;
-                               tb_twist.angular.z = 0;              break;
-    }
+    else if (GetKeyInfo_(TB_TURN_RIGHT_KEY_).key_type == KEYDOWN)
+        tb_twist.angular.z = -TB_TURN_SPEED;
+
+    else
+        tb_twist.angular.z = 0;
 
     velocity_pub_->publish(tb_twist);
 }
