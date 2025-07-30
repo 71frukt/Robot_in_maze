@@ -13,8 +13,8 @@ def generate_launch_description():
     launch_file_dir = os.path.join(pkg_turtlebot3_gazebo, 'launch')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
-    pkg_autonomous_tb3 = get_package_share_directory('autonomous_tb3')
-    world_path = os.path.join(pkg_autonomous_tb3, 'worlds', 'small_city.world')
+    pkg_autonomous_robot = get_package_share_directory('autonomous_robot')
+    world_path = os.path.join(pkg_autonomous_robot, 'worlds', 'small_city.world')
 
 
     return LaunchDescription([
@@ -51,7 +51,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='autonomous_tb3',
+            package='autonomous_robot',
             executable='tb_key_control_node',
             output='screen',
             # prefix='xterm -e',  # for keyboard correct work

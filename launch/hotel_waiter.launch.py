@@ -28,13 +28,13 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
-    hotel_path = os.path.join(get_package_share_directory('autonomous_tb3'),'world','hotel','model.sdf')
-    table_path = os.path.join(get_package_share_directory('autonomous_tb3'),'models','table','model.sdf')
-    config_dir = os.path.join(get_package_share_directory('autonomous_tb3'),'config')
+    hotel_path = os.path.join(get_package_share_directory('autonomous_robot'),'world','hotel','model.sdf')
+    table_path = os.path.join(get_package_share_directory('autonomous_robot'),'models','table','model.sdf')
+    config_dir = os.path.join(get_package_share_directory('autonomous_robot'),'config')
     map_file   = os.path.join(config_dir,'hotel_map.yaml')
-    actor_path = os.path.join(get_package_share_directory('autonomous_tb3'),'models','actor','model.sdf')
+    actor_path = os.path.join(get_package_share_directory('autonomous_robot'),'models','actor','model.sdf')
 
-    world_path = os.path.join(get_package_share_directory('autonomous_tb3'),'world','hotel','empty_world.world')
+    world_path = os.path.join(get_package_share_directory('autonomous_robot'),'world','hotel','empty_world.world')
     params_file = os.path.join(config_dir,'tb3_nav_params.yaml')
     map_config = os.path.join(config_dir,'mapping.rviz')
     nav_config = os.path.join(config_dir,'tb3_nav.rviz')
@@ -74,7 +74,7 @@ def generate_launch_description():
     )
 
     hotel_spawner=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',
@@ -83,7 +83,7 @@ def generate_launch_description():
     )
 
     table_spawner_1=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',
@@ -92,7 +92,7 @@ def generate_launch_description():
     )
 
     table_spawner_2=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',
@@ -101,7 +101,7 @@ def generate_launch_description():
     )
 
     table_spawner_3=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',
@@ -110,7 +110,7 @@ def generate_launch_description():
     )
 
     table_spawner_4=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',
@@ -119,7 +119,7 @@ def generate_launch_description():
     )
 
     actor_spawn=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='hotel_spawner',

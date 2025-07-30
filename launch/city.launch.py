@@ -8,10 +8,10 @@ from launch.actions import ExecuteProcess
 from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
-    pkg_autonomous_tb3 = get_package_share_directory('autonomous_tb3')
+    pkg_autonomous_robot = get_package_share_directory('autonomous_robot')
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
-    world_path = os.path.join(pkg_autonomous_tb3, 'worlds', 'small_city.world')
+    world_path = os.path.join(pkg_autonomous_robot, 'worlds', 'small_city.world')
 
     return LaunchDescription([
         # start Gazebo

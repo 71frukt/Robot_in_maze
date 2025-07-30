@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(autonomous_tb3)
+project(autonomous_robot)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -17,8 +17,8 @@ find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(keyboard_msgs REQUIRED)
-find_package(keyboard REQUIRED)
+# find_package(keyboard_msgs REQUIRED)  // TODO: change
+# find_package(keyboard REQUIRED)
 
 
 set(dependencies
@@ -51,14 +51,14 @@ install(FILES
 include_directories(include)
 
 # Create Cpp executable
-add_executable(tb_key_control_node src/tb_key_control.cpp)
-ament_target_dependencies(tb_key_control_node ${dependencies})
+# add_executable(tb_key_control_node src/tb_key_control.cpp)
+# ament_target_dependencies(tb_key_control_node ${dependencies})
 
 # Install Cpp executables
-install(TARGETS
-    tb_key_control_node
-    DESTINATION lib/${PROJECT_NAME}
-)
+# install(TARGETS
+#     tb_key_control_node
+#     DESTINATION lib/${PROJECT_NAME}
+# )
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})

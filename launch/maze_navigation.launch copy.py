@@ -28,10 +28,10 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
-    # maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'),'world','default_maze','model.sdf')
-    maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'), 'world', 'random_maze', 'model.sdf')
+    # maze_path       = os.path.join(get_package_share_directory('autonomous_robot'),'world','default_maze','model.sdf')
+    maze_path       = os.path.join(get_package_share_directory('autonomous_robot'), 'world', 'random_maze', 'model.sdf')
 
-    config_dir      = os.path.join(get_package_share_directory('autonomous_tb3'),'config')
+    config_dir      = os.path.join(get_package_share_directory('autonomous_robot'),'config')
     
     # map_file        = os.path.join(config_dir,'maze.yaml')
     map_file        = os.path.join(config_dir,'random_maze.yaml')
@@ -73,7 +73,7 @@ def generate_launch_description():
     )
 
     maze_spawner=Node(
-        package='autonomous_tb3',
+        package='autonomous_robot',
         output='screen',
         executable='spawn_entity.py',
         name='maze_spawner',
@@ -104,7 +104,7 @@ def generate_launch_description():
     )
 
     # path_follower_node = Node(
-    #     package='autonomous_tb3',
+    #     package='autonomous_robot',
     #     executable='path_follower',
     #     name='path_follower',
     #     output='screen'

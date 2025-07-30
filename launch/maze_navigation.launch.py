@@ -28,10 +28,10 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
-    # maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'),'world','default_maze','model.sdf')
-    # maze_path       = os.path.join(get_package_share_directory('autonomous_tb3'), 'worlds', 'random_maze', 'model.sdf')
+    # maze_path       = os.path.join(get_package_share_directory('autonomous_robot'),'world','default_maze','model.sdf')
+    maze_path       = os.path.join(get_package_share_directory('autonomous_robot'), 'worlds', 'random_maze', 'model.sdf')
 
-    config_dir      = os.path.join(get_package_share_directory('autonomous_tb3'),'config')
+    config_dir      = os.path.join(get_package_share_directory('autonomous_robot'),'config')
     
     # map_file        = os.path.join(config_dir,'maze.yaml')
     # map_file        = os.path.join(config_dir,'random_maze.yaml')
@@ -40,8 +40,8 @@ def generate_launch_description():
     rviz_config     = os.path.join(config_dir,'tb3_nav.rviz')
     pkg_gazebo_ros  = get_package_share_directory('gazebo_ros')
 
-    pkg_autonomous_tb3 = get_package_share_directory('autonomous_tb3')
-    world_path = os.path.join(pkg_autonomous_tb3, 'worlds', 'small_city.world')
+    pkg_autonomous_robot = get_package_share_directory('autonomous_robot')
+    world_path = os.path.join(pkg_autonomous_robot, 'worlds', 'small_city.world')
 
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -81,13 +81,13 @@ def generate_launch_description():
         }.items()
     )
 
-    # maze_spawner=Node(
-    #     package='autonomous_tb3',
-    #     output='screen',
-    #     executable='spawn_entity.py',
-    #     name='maze_spawner',
-    #     arguments=[maze_path,"b","0.0" ,"0.0" ]
-    # )
+    maze_spawner=Node(
+        package='autonomous_robot',
+        output='screen',
+        executable='spawn_entity.py',
+        name='maze_spawner',
+        arguments=[maze_path,"b","0.0" ,"0.0" ]
+    )
 
     maze_nav =IncludeLaunchDescription(
         PythonLaunchDescriptionSource([get_package_share_directory('nav2_bringup'),'/launch','/bringup_launch.py']),
@@ -106,7 +106,7 @@ def generate_launch_description():
     )
 
     # path_follower_node = Node(
-    #     package='autonomous_tb3',
+    #     package='autonomous_robot',
     #     executable='path_follower',
     #     name='path_follower',
     #     output='screen'

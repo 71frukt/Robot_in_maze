@@ -50,7 +50,7 @@ nano ~/.bashrc      # и в конец файла добавьте `export TURTL
 ```
 3. Сгенерируйте рандомный лабиринт
 
-    Запустите скрипт **~/ros2_ws/src/Robot_in_maze/autonomous_tb3/autonomous_tb3/maze_random_generate.py**
+    Запустите скрипт **~/ros2_ws/src/Robot_in_maze/autonomous_robot/autonomous_robot/maze_random_generate.py**
 
     Конфигурационные константы:
 
@@ -65,7 +65,7 @@ WALL_HEIGHT        = 2.5    # 2.5 метра в симуляции Gazebo
 
 4. Запустите launch-файл
 ```bash
-ros2 launch autonomous_tb3 maze_navigation.launch.py
+ros2 launch autonomous_robot maze_navigation.launch.py
 ```
 
 5. Путь к выходу
@@ -229,6 +229,6 @@ ros2 launch autonomous_tb3 maze_navigation.launch.py
 Про то как подгрузить нужные модели
 
 ```bash
-cd ros_ws/src/autonomous_tb3
+cd ros_ws/src/autonomous_robot
 export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:<path to gazebo_models_worlds_collection>/models
 ```
