@@ -28,26 +28,25 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
-    hotel_path = os.path.join(get_package_share_directory('autonomous_robot'),'world','hotel','model.sdf')
-    table_path = os.path.join(get_package_share_directory('autonomous_robot'),'models','table','model.sdf')
-    config_dir = os.path.join(get_package_share_directory('autonomous_robot'),'config')
-    map_file   = os.path.join(config_dir,'hotel_map.yaml')
-    actor_path = os.path.join(get_package_share_directory('autonomous_robot'),'models','actor','model.sdf')
+    # maze_path       = os.path.join(get_package_share_directory('autonomous_robot_pkg'),'world','default_maze','model.sdf')
+    maze_path       = os.path.join(get_package_share_directory('autonomous_robot_pkg'), 'world', 'random_maze', 'model.sdf')
 
-    world_path = os.path.join(get_package_share_directory('autonomous_robot'),'world','hotel','empty_world.world')
-    params_file = os.path.join(config_dir,'tb3_nav_params.yaml')
-    map_config = os.path.join(config_dir,'mapping.rviz')
-    nav_config = os.path.join(config_dir,'tb3_nav.rviz')
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+    config_dir      = os.path.join(get_package_share_directory('autonomous_robot_pkg'),'config')
+    
+    # map_file        = os.path.join(config_dir,'maze.yaml')
+    map_file        = os.path.join(config_dir,'random_maze.yaml')
+    params_file     = os.path.join(config_dir,'tb3_nav_params.yaml')
+    rviz_config     = os.path.join(config_dir,'tb3_nav.rviz')
+    pkg_gazebo_ros  = get_package_share_directory('gazebo_ros')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    x_pose = LaunchConfiguration('x_pose', default='-4.5')
-    y_pose = LaunchConfiguration('y_pose', default='0.51')
+    x_pose = LaunchConfiguration('x_pose', default='2.0')
+    y_pose = LaunchConfiguration('y_pose', default='2.0')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
-        ),launch_arguments={'world': world_path}.items()
+        ),
     )
 
     gzclient_cmd = IncludeLaunchDescription(
@@ -73,68 +72,22 @@ def generate_launch_description():
         }.items()
     )
 
-    hotel_spawner=Node(
-        package='autonomous_robot',
+    maze_spawner=Node(
+        package='autonomous_robot_pkg',
         output='screen',
         executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[hotel_path,"hotel","0.0" ,"0.0" ]
+        name='maze_spawner',
+        arguments=[maze_path,"b","0.0" ,"0.0" ]
 
     )
 
-    table_spawner_1=Node(
-        package='autonomous_robot',
-        output='screen',
-        executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[table_path,"table_1","-0.6" ,"3.99" ]
-
-    )
-
-    table_spawner_2=Node(
-        package='autonomous_robot',
-        output='screen',
-        executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[table_path,"table_2","4.52" ,"3.99" ]
-
-    )
-
-    table_spawner_3=Node(
-        package='autonomous_robot',
-        output='screen',
-        executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[table_path,"table_3","4.53" ,"-3.17" ]
-
-    )
-
-    table_spawner_4=Node(
-        package='autonomous_robot',
-        output='screen',
-        executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[table_path,"table_4","-0.6" ,"-3.09" ]
-
-    )
-
-    actor_spawn=Node(
-        package='autonomous_robot',
-        output='screen',
-        executable='spawn_entity.py',
-        name='hotel_spawner',
-        arguments=[actor_path,"actor","-0.6" ,"-3.09" ]
-
-    )
-
-
-    hotel_mapping = IncludeLaunchDescription(
+    maze_mapping = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('slam_toolbox'),'launch', 'online_async_launch.py')
         ),
     )
 
-    hotel_nav=IncludeLaunchDescription(
+    maze_nav =IncludeLaunchDescription(
         PythonLaunchDescriptionSource([get_package_share_directory('nav2_bringup'),'/launch','/bringup_launch.py']),
         launch_arguments={
         'map':map_file,
@@ -146,12 +99,16 @@ def generate_launch_description():
         output='screen',
         executable='rviz2',
         name='rviz2_node',
-        # arguments=['-d',map_config]
-        arguments=['-d',nav_config]
+        arguments=['-d',rviz_config]
 
     )
 
-
+    # path_follower_node = Node(
+    #     package='autonomous_robot_pkg',
+    #     executable='path_follower',
+    #     name='path_follower',
+    #     output='screen'
+    # )
 
 
     ld = LaunchDescription()
@@ -160,18 +117,11 @@ def generate_launch_description():
     ld.add_action(gzserver_cmd)
     ld.add_action(gzclient_cmd)
     ld.add_action(robot_state_publisher_cmd)
-
     ld.add_action(spawn_turtlebot_cmd)
-
-    ld.add_action(hotel_spawner)
-    ld.add_action(table_spawner_1)
-    ld.add_action(table_spawner_2)
-    ld.add_action(table_spawner_3)
-    ld.add_action(table_spawner_4)
-
-    # ld.add_action(hotel_mapping)
+    ld.add_action(maze_spawner)
+    # ld.add_action(maze_mapping)
     ld.add_action(rviz)
-
-    ld.add_action(hotel_nav)
+    ld.add_action(maze_nav)
+    # ld.add_action(path_follower_node)
 
     return ld

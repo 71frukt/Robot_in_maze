@@ -13,8 +13,8 @@ def generate_launch_description():
     launch_file_dir = os.path.join(pkg_turtlebot3_gazebo, 'launch')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
-    pkg_autonomous_robot = get_package_share_directory('autonomous_robot')
-    world_path = os.path.join(pkg_autonomous_robot, 'worlds', 'small_city.world')
+    pkg_autonomous_robot_pkg = get_package_share_directory('autonomous_robot_pkg')
+    world_path = os.path.join(pkg_autonomous_robot_pkg, 'worlds', 'small_city.world')
 
 
     return LaunchDescription([
@@ -24,9 +24,9 @@ def generate_launch_description():
                 os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
             ),
                         
-            launch_arguments={
-                'world': world_path,
-            }.items()
+            # launch_arguments={
+            #     'world': world_path,
+            # }.items()
         ),
 
         IncludeLaunchDescription(
@@ -51,7 +51,7 @@ def generate_launch_description():
         ),
 
         Node(
-            package='autonomous_robot',
+            package='autonomous_robot_pkg',
             executable='tb_key_control_node',
             output='screen',
             # prefix='xterm -e',  # for keyboard correct work

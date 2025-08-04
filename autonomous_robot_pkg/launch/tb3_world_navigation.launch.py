@@ -7,7 +7,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    config_dir = os.path.join(get_package_share_directory('autonomous_robot'),'config')
+    config_dir = os.path.join(get_package_share_directory('autonomous_robot_pkg'),'config')
     map_file = os.path.join(config_dir,'tb3_world.yaml')
     params_file = os.path.join(config_dir,'tb3_nav_params.yaml')
     rviz_config= os.path.join(config_dir,'tb3_nav.rviz')

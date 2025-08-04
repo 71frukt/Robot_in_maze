@@ -23,8 +23,8 @@ private:
     static constexpr char   TB_TURN_LEFT_KEY_     = 'a';
     static constexpr char   TB_TURN_RIGHT_KEY_    = 'd';
 
-    static constexpr double TB_MOVE_SPEED         = 2;       // meters  per sec
-    static constexpr double TB_TURN_SPEED         = 2;        // radians per sec
+    static constexpr double TB_MOVE_SPEED         = 1;       // meters  per sec
+    static constexpr double TB_TURN_SPEED         = 0.5;     // radians per sec
 
     static const size_t KEYS_NUM = 256;
     KeyInfo keys_info_[KEYS_NUM]  = {};

@@ -28,20 +28,20 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     launch_file_dir = os.path.join(get_package_share_directory('turtlebot3_gazebo'), 'launch')
-    # maze_path       = os.path.join(get_package_share_directory('autonomous_robot'),'world','default_maze','model.sdf')
-    maze_path       = os.path.join(get_package_share_directory('autonomous_robot'), 'worlds', 'random_maze', 'model.sdf')
+    # maze_path       = os.path.join(get_package_share_directory('autonomous_robot_pkg'),'world','default_maze','model.sdf')
+    maze_path       = os.path.join(get_package_share_directory('autonomous_robot_pkg'), 'worlds', 'random_maze', 'model.sdf')
 
-    config_dir      = os.path.join(get_package_share_directory('autonomous_robot'),'config')
+    config_dir      = os.path.join(get_package_share_directory('autonomous_robot_pkg'),'config')
     
     # map_file        = os.path.join(config_dir,'maze.yaml')
-    # map_file        = os.path.join(config_dir,'random_maze.yaml')
-    map_file        = os.path.join(config_dir,'city_map.yaml')
+    map_file        = os.path.join(config_dir,'random_maze.yaml')
+    # map_file        = os.path.join(config_dir,'city_map.yaml')
     params_file     = os.path.join(config_dir,'tb3_nav_params.yaml')
     rviz_config     = os.path.join(config_dir,'tb3_nav.rviz')
     pkg_gazebo_ros  = get_package_share_directory('gazebo_ros')
 
-    pkg_autonomous_robot = get_package_share_directory('autonomous_robot')
-    world_path = os.path.join(pkg_autonomous_robot, 'worlds', 'small_city.world')
+    pkg_autonomous_robot_pkg = get_package_share_directory('autonomous_robot_pkg')
+    world_path = os.path.join(pkg_autonomous_robot_pkg, 'worlds', 'small_city.world')
 
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -53,9 +53,9 @@ def generate_launch_description():
             os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
         ),
 
-        launch_arguments={
-                'world': world_path,
-            }.items()
+        # launch_arguments={
+        #         'world': world_path,
+        #     }.items()
     )
 
     gzclient_cmd = IncludeLaunchDescription(
@@ -82,7 +82,7 @@ def generate_launch_description():
     )
 
     maze_spawner=Node(
-        package='autonomous_robot',
+        package='autonomous_robot_pkg',
         output='screen',
         executable='spawn_entity.py',
         name='maze_spawner',
@@ -102,16 +102,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2_node',
         arguments=['-d',rviz_config]
-
     )
-
-    # path_follower_node = Node(
-    #     package='autonomous_robot',
-    #     executable='path_follower',
-    #     name='path_follower',
-    #     output='screen'
-    # )
-
 
     ld = LaunchDescription()
 
@@ -120,7 +111,7 @@ def generate_launch_description():
     ld.add_action(gzclient_cmd)
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_turtlebot_cmd)
-    # ld.add_action(maze_spawner)
+    ld.add_action(maze_spawner)
     ld.add_action(rviz)
     ld.add_action(maze_nav)
 

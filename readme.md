@@ -48,9 +48,15 @@ sudo apt install ros-humble-turtlebot3*
 
 nano ~/.bashrc      # и в конец файла добавьте `export TURTLEBOT3_MODEL=burger`
 ```
-3. Сгенерируйте рандомный лабиринт
 
-    Запустите скрипт **~/ros2_ws/src/Robot_in_maze/autonomous_robot/autonomous_robot/maze_random_generate.py**
+3. Соберите проект
+```bash
+colcon build
+```
+
+4. Сгенерируйте рандомный лабиринт
+
+    Запустите скрипт **~/ros2_ws/src/Robot_in_maze/autonomous_robot_pkg/autonomous_robot_pkg/maze_random_generate.py**
 
     Конфигурационные константы:
 
@@ -63,12 +69,12 @@ CELL_TO_WALL_RATIO = 3      # коридор в 3 раза шире стены
 WALL_HEIGHT        = 2.5    # 2.5 метра в симуляции Gazebo
 ```
 
-4. Запустите launch-файл
+5. Запустите launch-файл
 ```bash
-ros2 launch autonomous_robot maze_navigation.launch.py
+ros2 launch autonomous_robot_pkg maze_navigation.launch.py
 ```
 
-5. Путь к выходу
+6. Путь к выходу
     После загрузки Gazebo и RVis нужно указать роботу начальное положение и цель, к которой он должен следовать. 
 
 <img src="readme_images/tb_pose_estimate.png" alt="TurtleBot3" style="width: 75%;">
@@ -223,12 +229,12 @@ ros2 launch autonomous_robot maze_navigation.launch.py
 
 
 
-
+<!-- 
 
 
 Про то как подгрузить нужные модели
 
 ```bash
-cd ros_ws/src/autonomous_robot
+cd ros_ws/src/autonomous_robot_pkg
 export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:<path to gazebo_models_worlds_collection>/models
-```
+``` -->
