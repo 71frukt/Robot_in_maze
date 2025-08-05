@@ -1,0 +1,31 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names:  ["front_left_joint" , "back_left_joint"]
+    right_wheel_names: ["front_right_joint", "back_right_joint"]
+
+    # расстояние между центрами левого и правого колеса (в метрах)
+    wheel_separation: 0.5
+
+    # Радиус колеса (в метрах)
+    wheel_radius: 0.1
+
+    wheel_radius_multiplier: 1.0
+    use_stamped_vel: false
+    publish_rate: 50.0  # Частота публикации /odom
+    frame_id: base_link
+    odom_frame_id: odom
+    publish_tf: true    # Публиковать transform base_link → odom
+
+    # Топик, с которого принимаем команды
+    cmd_vel_topic: /cmd_vel
+
+    # Максимальные значения (защита)
+    # linear.x, angular.z
+    velocity_rolling_window_size: 10

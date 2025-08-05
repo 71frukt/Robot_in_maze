@@ -33,6 +33,7 @@ set(dependencies
 install(DIRECTORY launch/   DESTINATION share/${PROJECT_NAME}/launch)
 install(DIRECTORY config/   DESTINATION share/${PROJECT_NAME}/config)
 install(DIRECTORY worlds/   DESTINATION share/${PROJECT_NAME}/worlds)
+install(DIRECTORY models/   DESTINATION share/${PROJECT_NAME}/models)
 
 install(FILES
     gazebo_models_worlds_collection/worlds/small_city.world

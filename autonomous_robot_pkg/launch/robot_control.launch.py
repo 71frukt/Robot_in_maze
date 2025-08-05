@@ -9,12 +9,9 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     pkg_turtlebot3_gazebo = get_package_share_directory('turtlebot3_gazebo')
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
-    launch_file_dir = os.path.join(pkg_turtlebot3_gazebo, 'launch')
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-
-    pkg_autonomous_robot_pkg = get_package_share_directory('autonomous_robot_pkg')
-    world_path = os.path.join(pkg_autonomous_robot_pkg, 'worlds', 'small_city.world')
+    pkg_gazebo_ros        = get_package_share_directory('gazebo_ros')
+    autonomous_robot_pkg  = get_package_share_directory('autonomous_robot_pkg')
+    world_path = os.path.join(autonomous_robot_pkg, 'worlds', 'small_city.world')
 
 
     return LaunchDescription([
