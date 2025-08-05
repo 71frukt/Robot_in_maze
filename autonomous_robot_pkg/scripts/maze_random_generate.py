@@ -19,7 +19,7 @@ MAZE_PGM_FILENAME    = 'random_maze.pgm'
 
 MAZE_PGM_FILE_PATH = os.path.join(BASE_DIR, '..', MAZE_PGM_FILE_FOLDER,  MAZE_PGM_FILENAME)
 
-MAZE_SDF_FILE_PATH = os.path.join(BASE_DIR, '..', 'world', 'random_maze', 'model.sdf')
+MAZE_SDF_FILE_PATH = os.path.join(BASE_DIR, '..', 'worlds', 'random_maze', 'model.sdf')
 
 # MAZE_YAML_FILE_NAME = MAZE_PGM_FILE_NAME.replace('.pgm', '.yaml')  -  так кодом задается имя yaml файла
 
