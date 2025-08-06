@@ -1,5 +1,12 @@
 # Автономная навигация в пространстве с помощью лидара
 
+## Требования к программному обеспечению
+* Ubuntu 22.04 (LTS)
+* Gazebo Classic
+* ROS2 Humble
+* библиотека SDL1.2
+* библиотека Turtlebot3
+
 ## Описание проекта
 Основа для проекта взята из [этого](https://github.com/Water1ock/Autonomous-Robots-Using-ROS2-Humble) открытого репозитория.
 
@@ -27,11 +34,6 @@
   <figcaption style="font-style: italic; color: gray;">TurtleBot3 - мобильный робот для ROS</figcaption>
 </figure>
 
-
-## Требования к программному обеспечению
-* Ubuntu 22.04 (LTS)
-* Gazebo Classic
-* ROS2 - Humble
 
 ## Установка и запуск
 1. Клонируйте репозиторий в папку src своего рабочего пространства ros
