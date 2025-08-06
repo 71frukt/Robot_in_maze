@@ -58,7 +58,7 @@ colcon build
 
 4. Сгенерируйте рандомный лабиринт
 
-    Запустите скрипт **~/ros2_ws/src/Robot_in_maze/autonomous_robot_pkg/autonomous_robot_pkg/maze_random_generate.py**
+    Запустите скрипт **~/ros2_ws/src/autonomous_robot/autonomous_robot_pkg/autonomous_robot_pkg/maze_random_generate.py**
 
     Конфигурационные константы:
 
