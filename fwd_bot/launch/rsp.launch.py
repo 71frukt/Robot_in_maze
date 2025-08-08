@@ -20,8 +20,8 @@ def generate_launch_description():
 
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory(package_name))
-    xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
-    rviz_config_path = os.path.join(pkg_path,'rviz','urdf_config.rviz')
+    xacro_file = os.path.join(pkg_path,'fwd_bot_model','robot.urdf.xacro')
+    # rviz_config_path = os.path.join(pkg_path,'rviz','urdf_config.rviz')
     robot_description_config = xacro.process_file(xacro_file)
     
     # Create a robot_state_publisher node
@@ -45,13 +45,13 @@ def generate_launch_description():
         name='joint_state_publisher_gui'
     )
 
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', LaunchConfiguration('rvizconfig')],
-    )    
+    # rviz_node = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     output='screen',
+    #     arguments=['-d', LaunchConfiguration('rvizconfig')],
+    # )    
 
 
     # Launch!
@@ -60,13 +60,13 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use sim time if true'),
-        DeclareLaunchArgument(name='rvizconfig', default_value=rviz_config_path,
-            description='Absolute path to rviz config file'),            
+        # DeclareLaunchArgument(name='rvizconfig', default_value=rviz_config_path,
+        #     description='Absolute path to rviz config file'),            
 
         node_robot_state_publisher,
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
-        rviz_node
+        # rviz_node
     ])
 
     
