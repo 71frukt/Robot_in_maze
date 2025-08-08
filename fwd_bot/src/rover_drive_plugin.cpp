@@ -63,6 +63,9 @@ void RoverDrivePlugin::Load(physics::ModelPtr model, sdf::ElementPtr rover_sdf)
     );
 
     last_update_time_ = model_->GetWorld()->SimTime();
+
+    RCLCPP_INFO(rclcpp::get_logger("gazebo"), "[%s] Plugin loaded for model %s",
+                                              RoverDrivePlugin::PLUGIN_NAME.c_str(), model_->GetName().c_str());
 }
 
 void RoverDrivePlugin::ReadBoardWheelsJoints_(const sdf::ElementPtr rover_sdf, const std::string &joints_sdf_name, std::vector<physics::JointPtr> &target_joints)

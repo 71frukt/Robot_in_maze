@@ -2,27 +2,24 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <gazebo>
-        <plugin name="wheel_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <plugin name="rover_drive_plugin" filename="librover_drive_plugin.so">
             <!-- wheels -->
-            <num_wheel_pairs>2</num_wheel_pairs>
-            <left_joint>  wheel_fl_joint </left_joint>
-            <left_joint>  wheel_bl_joint </left_joint>
-            <right_joint> wheel_fr_joint </right_joint>
-            <right_joint> wheel_br_joint </right_joint>
+            <left_wheels_joints>  wheel_fl_joint wheel_bl_joint </left_wheels_joints>
+            <right_wheels_joints> wheel_fr_joint wheel_br_joint </right_wheels_joints>
 
             <!-- kinematics -->
-            <wheel_separation>0.4</wheel_separation>
-            <wheel_diameter>0.1</wheel_diameter>
+            <wheel_separation> 0.4  </wheel_separation>
+            <wheel_radius>     0.05 </wheel_radius>
 
 
 
             <!-- Limits -->
-            <max_wheel_torque>200.0</max_wheel_torque>
-            <max_wheel_acceleration>10.0</max_wheel_acceleration>
+            <!-- <max_wheel_torque>200.0</max_wheel_torque>
+            <max_wheel_acceleration>10.0</max_wheel_acceleration> -->
 
             <!-- Output -->
-            <odometry_frame>odom</odometry_frame>
-            <robot_base_frame>base_link</robot_base_frame>
+            <!-- <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_link</robot_base_frame> -->
 
             <!-- topic & re remappings -->
             <!-- ros>
@@ -31,9 +28,9 @@
                 <argument>/odom:=odom</argument>
             </ros -->
 
-            <publish_odom>true</publish_odom>
+            <!-- <publish_odom>true</publish_odom>
             <publish_odom_tf>true</publish_odom_tf>
-            <update_rate>30.0</update_rate>
+            <update_rate>30.0</update_rate> -->
         </plugin>
     </gazebo>
 

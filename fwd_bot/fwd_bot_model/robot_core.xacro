@@ -138,7 +138,7 @@
     <gazebo reference="right_wheel_frontside">
         <material>Gazebo/Red</material>
     </gazebo>
-    <gazebo reference="right_wheel_backside">
+    <gazebo reference="right_wheel_backsileft_front_wheel_jointde">
         <material>Gazebo/Red</material>
     </gazebo>
     <gazebo reference="left_wheel_frontside">
